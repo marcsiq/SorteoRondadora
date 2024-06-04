@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="xBdSoz" name="SorteoRondadora" projectType="guiapp" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+  <MAINGROUP id="adADSj" name="SorteoRondadora">
+    <GROUP id="{9E927836-705C-C0DB-8D2B-5DEB309A2DC5}" name="Source">
+      <FILE id="fpreby" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="PYiTDG" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="Lkxhfk" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+    </GROUP>
+    <GROUP id="{B35A4FF5-5E6D-1716-5FEB-3401E4D1B952}" name="Resources">
+      <FILE id="chdxgp" name="rondadora.png" compile="0" resource="1" file="Resources/rondadora.png"/>
+      <FILE id="yZd8uG" name="chapa1.png" compile="0" resource="1" file="Resources/chapa1.png"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <EXPORTFORMATS>
+    <VS2019 targetFolder="Builds/VisualStudio2019" smallIcon="yZd8uG" bigIcon="yZd8uG">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="SorteoRondadora"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="SorteoRondadora"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../../../../NeuralDSP/Repos/kone-tools/Submodules/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../../NeuralDSP/Repos/kone-tools/Submodules/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../../NeuralDSP/Repos/kone-tools/Submodules/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../../NeuralDSP/Repos/kone-tools/Submodules/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../../NeuralDSP/Repos/kone-tools/Submodules/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../../../NeuralDSP/Repos/kone-tools/Submodules/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2019>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+</JUCERPROJECT>
