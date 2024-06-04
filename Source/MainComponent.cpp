@@ -164,6 +164,13 @@ bool MainComponent::keyPressed(const juce::KeyPress& key)
         updateCounter(0);
         return true;
     }
+    else if (key.getTextCharacter() == 't')
+    {
+        if (isTimerRunning())
+            stopTimer();
+        else
+            startTimer(5000);
+    }
     else if (key == sKey)
     {
         updateCounter(0);
@@ -211,4 +218,9 @@ juce::Path MainComponent::getGraph()
         path.closeSubPath();
     }
    return path;
+}
+
+void MainComponent::timerCallback()
+{
+    updateCounter(contador, true);
 }

@@ -9,7 +9,8 @@
 */
 class MainComponent  
     : public juce::Component,
-    public juce::Button::Listener
+    public juce::Button::Listener,
+    public juce::Timer
 {
 public:
     //==============================================================================
@@ -26,6 +27,7 @@ public:
     //==============================================================================
     void buttonClicked(juce::Button* button) override;
     bool keyPressed(const juce::KeyPress& key) override;
+    void timerCallback() override;
 private:
     //==============================================================================
     // Your private member variables go here...
