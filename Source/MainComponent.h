@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Graph.h"
 
 //==============================================================================
 /*
@@ -20,6 +21,7 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    void updateValueFont();
 
     //==============================================================================
     void updateCounter(int newValue, bool force = false);
@@ -31,10 +33,16 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
+    static constexpr float margin = 50.f;
+    float yLineValue;
+
     int contador;
     juce::ImageButton plusButton;
 
     juce::Image fondo;
+
+    Graph graph;
+
 
     juce::Label titleText;
     juce::Label rondaText;
@@ -43,28 +51,6 @@ private:
     juce::Label literValue;
 
     juce::KeyPress sKey;
-
-    struct DataPoint 
-    {
-        DataPoint(int counter)
-        {
-            time = juce::Time::getApproximateMillisecondCounter();
-            value = counter;
-        }
-
-        DataPoint()
-            :time(0), value(0)
-        {
-
-        }
-        int time;
-        int value;
-    };
-
-    bool needsPaint = false;
-
-    juce::Array<DataPoint> dataPoints;
-    juce::Path getGraph();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

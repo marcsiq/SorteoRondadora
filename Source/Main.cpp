@@ -61,8 +61,9 @@ public:
             setTitleBarHeight (0);
             setContentOwned (new MainComponent(), true);
             setResizable(true, true);
-            setFullScreen (true);
             setVisible (true);
+            setResizeLimits(1280, 720, 2560, 1440);
+            setFullScreen (true);
         }
 
         void closeButtonPressed() override

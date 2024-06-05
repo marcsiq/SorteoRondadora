@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="xBdSoz" name="SorteoRondadora" projectType="guiapp" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              version="1.1.0">
   <MAINGROUP id="adADSj" name="SorteoRondadora">
     <GROUP id="{9E927836-705C-C0DB-8D2B-5DEB309A2DC5}" name="Source">
+      <FILE id="LymWhT" name="Graph.h" compile="0" resource="0" file="Source/Graph.h"/>
       <FILE id="fpreby" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="PYiTDG" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="Lkxhfk" name="MainComponent.cpp" compile="1" resource="0"
@@ -14,7 +16,7 @@
       <FILE id="yZd8uG" name="chapa1.png" compile="0" resource="1" file="Resources/chapa1.png"/>
     </GROUP>
   </MAINGROUP>
-  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_WEB_BROWSER="0"/>
   <EXPORTFORMATS>
     <VS2019 targetFolder="Builds/VisualStudio2019" smallIcon="yZd8uG" bigIcon="yZd8uG">
       <CONFIGURATIONS>

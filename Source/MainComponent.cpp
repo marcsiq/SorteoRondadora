@@ -14,36 +14,31 @@ MainComponent::MainComponent()
     // Ronda Text
     addAndMakeVisible(rondaText);
     rondaText.setText("Botellas 33cl", juce::NotificationType::dontSendNotification);
-    rondaText.setFont(juce::Font(80.f));
     rondaText.setColour(juce::Label::ColourIds::textColourId, juce::Colours::black);
     rondaText.setJustificationType(juce::Justification::centredLeft);
     rondaText.setRepaintsOnMouseActivity(false);
 
     // Ronda Value
     addAndMakeVisible(rondaValue);
-    rondaValue.setFont(juce::Font(400.f).boldened());
     rondaValue.setColour(juce::Label::ColourIds::textColourId, juce::Colours::red);
-    rondaValue.setJustificationType(juce::Justification::centredLeft);
+    rondaValue.setJustificationType(juce::Justification::topLeft);
     rondaValue.setRepaintsOnMouseActivity(false);
 
     // Litros Text
     addAndMakeVisible(literText);
     literText.setText("Litros Totales", juce::NotificationType::dontSendNotification);
-    literText.setFont(juce::Font(80.f));
     literText.setColour(juce::Label::ColourIds::textColourId, juce::Colours::black);
     literText.setJustificationType(juce::Justification::centredRight);
     literText.setRepaintsOnMouseActivity(false);
 
     // Litros Value
     addAndMakeVisible(literValue);
-    literValue.setFont(juce::Font(400.f).boldened());
     literValue.setColour(juce::Label::ColourIds::textColourId, juce::Colours::red);
-    literValue.setJustificationType(juce::Justification::centredRight);
+    literValue.setJustificationType(juce::Justification::topRight);
     literValue.setRepaintsOnMouseActivity(false);
 
     // Title Text
     addAndMakeVisible(titleText);
-    titleText.setFont(juce::Font(110.f).boldened());
     titleText.setColour(juce::Label::ColourIds::textColourId, juce::Colours::red);
     titleText.setJustificationType(juce::Justification::centred);
     titleText.setText("MEGASORTEO CRIMINAL RONDADORA", juce::NotificationType::dontSendNotification);
@@ -57,11 +52,15 @@ MainComponent::MainComponent()
         chapam1, 1.f, juce::Colours::transparentWhite,
         chapam1, 1.f, juce::Colours::red.withAlpha(0.8f));
 
+    // Graph
+    addAndMakeVisible(graph);
+
     // Initial Size
-    setSize (600, 400);
+    setSize (1280, 720);
 
     // Reset
     updateCounter(0, true);
+    startTimer(5000);
 }
 
 MainComponent::~MainComponent()
@@ -74,36 +73,63 @@ void MainComponent::paint(juce::Graphics& g)
     //if (needsPaint)
     {
         g.fillAll(juce::Colours::white);
-        g.drawImage(fondo, getBounds().toFloat().translated(0, 380), juce::RectanglePlacement::centred);
-        g.setColour(juce::Colours::red.withAlpha(0.8f));
-        juce::Path p = getGraph();
-        g.fillPath(p);
+        g.drawImage(fondo, getBounds().toFloat().translated(0, getHeight() * JUCE_LIVE_CONSTANT(0.36f)), juce::RectanglePlacement::centred);
         g.setColour(juce::Colours::black);
-        g.drawLine(50, 200, (float)getWidth() - 50, 200, 4.f);
-        g.strokePath(p, juce::PathStrokeType(4.f));
-        needsPaint = false;
+        g.drawLine(margin, yLineValue, (float)getWidth() - margin, yLineValue, 4.f);
     }
 }
 
 void MainComponent::resized()
 {
+    auto b = getBounds();
+
+    yLineValue = getHeight() * 0.2f;
+
+    titleText.setBounds(b.removeFromTop((int)(getHeight() * 0.2f)).toNearestInt());
+    auto titleFont = juce::Font("Arial", "Regular", (float)proportionOfWidth(0.05f)).boldened();
+    titleText.setFont(titleFont);
+
+    graph.setBounds(b.removeFromBottom((int)(getHeight() * 0.2f)).toNearestInt());
+
+    b.removeFromBottom((int)(getHeight() * 0.05f));
+
     plusButton.setSize(215, 215);
-    plusButton.setCentrePosition(getWidth()/ 2, 500);
+    plusButton.setCentrePosition(getWidth()/ 2, (getHeight() - 100)/ 2 );
 
-    titleText.setSize(getWidth(), 400);
-    titleText.setCentrePosition(getWidth() / 2, 100);
+    b.reduce((int)margin, (int)(margin / 2));
+    auto left = b.removeFromLeft(getWidth() / 2);
+    auto right = b;
 
-    rondaText.setSize(400, 200);
-    rondaText.setTopLeftPosition(150, 200);
+    auto textFont = juce::Font("Arial", "Regular", (float)left.proportionOfWidth(JUCE_LIVE_CONSTANT(0.07f)));
 
-    rondaValue.setSize(getWidth() / 2, 400);
-    rondaValue.setTopLeftPosition(150, 300);
+    auto topProportion = JUCE_LIVE_CONSTANT(0.2f);
+    rondaText.setBounds(left.removeFromTop((int)(b.getHeight() * topProportion)).toNearestInt());
+    literText.setBounds(right.removeFromTop((int)(b.getHeight() * topProportion)).toNearestInt());
+    rondaText.setFont(textFont);
+    literText.setFont(textFont);
 
-    literText.setSize(400, 200);
-    literText.setTopLeftPosition(getWidth() - 150 - 400, 200);
 
-    literValue.setSize(getWidth() / 2, 400);
-    literValue.setTopLeftPosition(getWidth() / 2 - 150, 300);
+    rondaValue.setBounds(left);
+    literValue.setBounds(right);
+
+    updateValueFont();
+}
+
+void MainComponent::updateValueFont()
+{
+    auto numMaxChars = juce::jmax(rondaValue.getText().length(), literValue.getText().length());
+
+    auto valueProportion = JUCE_LIVE_CONSTANT(0.5f);
+    if(numMaxChars == 2)
+        valueProportion = JUCE_LIVE_CONSTANT(0.47f);
+    else if(numMaxChars == 3)
+        valueProportion = JUCE_LIVE_CONSTANT(0.37f);
+    else if(numMaxChars >= 4)
+        valueProportion = JUCE_LIVE_CONSTANT(0.32f);
+    auto valueFont = juce::Font("Arial", "Regular", (float)rondaValue.proportionOfWidth(valueProportion)).boldened();
+
+    rondaValue.setFont(valueFont);
+    literValue.setFont(valueFont);
 }
 
 void MainComponent::updateCounter(int newValue, bool force)
@@ -113,18 +139,11 @@ void MainComponent::updateCounter(int newValue, bool force)
         contador = newValue >= 0 ? newValue : 0;
 
         rondaValue.setText(juce::String(contador), juce::NotificationType::dontSendNotification);
-        if (rondaValue.getText().length() > 3)
-            rondaValue.setFont(juce::Font(300).boldened());
-        else
-            rondaValue.setFont(juce::Font(400).boldened());
         literValue.setText(juce::String(contador / 3), juce::NotificationType::dontSendNotification);
-        if (literValue.getText().length() > 3)
-            literValue.setFont(juce::Font(300).boldened());
-        else
-            literValue.setFont(juce::Font(400).boldened());
 
-        dataPoints.add(DataPoint(contador));
-        this->repaint();
+        updateValueFont();
+        graph.addValue(newValue);
+
     }
 }
 
@@ -154,13 +173,12 @@ bool MainComponent::keyPressed(const juce::KeyPress& key)
     }
     else if (key.getTextCharacter() == 'g')
     {
-        dataPoints.clear();
-        this->repaint();
+        graph.setVisible(!graph.isVisible());
         return true;
     }
     else if (key.getTextCharacter() == 'r')
     {
-        dataPoints.clear();
+        graph.clear();
         updateCounter(0);
         return true;
     }
@@ -186,38 +204,6 @@ bool MainComponent::keyPressed(const juce::KeyPress& key)
         }
     }
     return false;
-}
-
-juce::Path MainComponent::getGraph()
-{
-    juce::Path path;
-    const float minY = (float)getHeight();
-    const float maxY = (float)getHeight() - 400;
-    const float yRange = maxY - minY;
-
-    if (!dataPoints.isEmpty())
-    {
-        uint64_t maxValue = 0;
-        for (auto& dp : dataPoints)
-            if (dp.value > maxValue)
-                maxValue = dp.value;
-
-        float xZero = (float)dataPoints.getFirst().time;
-        float xRange = (float)dataPoints.getLast().time - xZero;
-
-        path.startNewSubPath(0, minY);
-        float x = 0, y = 0;
-        for(auto& dp : dataPoints)
-        {
-            x = &dp == dataPoints.begin() ? 0 : (dp.time - xZero) / xRange * getWidth();
-            y = maxValue == 0 ? minY : minY + (yRange * dp.value / (float) maxValue);
-            path.lineTo(x, y);
-        }
-        path.lineTo((float)getWidth(), y);
-        path.lineTo((float)getWidth(), minY);
-        path.closeSubPath();
-    }
-   return path;
 }
 
 void MainComponent::timerCallback()
